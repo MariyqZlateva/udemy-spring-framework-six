@@ -7,6 +7,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
+import jakarta.persistence.ManyToOne;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -22,6 +23,12 @@ public class Book {
     @JoinTable(name = "author_book", joinColumns = @JoinColumn(name = "book_id"),
     inverseJoinColumns = @JoinColumn(name = "author_id"))
     private Set<Author> authors = new HashSet<>();
+    @ManyToOne
+    private Publisher publisher;
+
+    public void setPublisher(Publisher publisher) {
+        this.publisher = publisher;
+    }
 
     public Set<Author> getAuthors() {
         return authors;
