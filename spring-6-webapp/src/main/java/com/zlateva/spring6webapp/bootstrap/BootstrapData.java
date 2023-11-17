@@ -6,12 +6,15 @@ import com.zlateva.spring6webapp.domain.Publisher;
 import com.zlateva.spring6webapp.repositories.AuthorRepository;
 import com.zlateva.spring6webapp.repositories.BookRepository;
 import com.zlateva.spring6webapp.repositories.PublisherRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
 @Component
 public class BootstrapData implements CommandLineRunner {
 
+    private final Logger logger = LoggerFactory.getLogger(BootstrapData.class);
     private final AuthorRepository authorRepository;
     private final BookRepository bookRepository;
 
@@ -35,6 +38,7 @@ public class BootstrapData implements CommandLineRunner {
 
         Author ericSaved = authorRepository.save(eric);
         Book dddSaved = bookRepository.save(ddd);
+
 
         Author rod = new Author();
         rod.setFirstName("Rod");
@@ -65,6 +69,11 @@ public class BootstrapData implements CommandLineRunner {
         authorRepository.save(rodSaved);
         bookRepository.save(dddSaved);
         bookRepository.save(noEJBSaved);
+
+        logger.info("Saved author = {}", ericSaved);
+        logger.info("Saved author = {}", rodSaved);
+        logger.info("Saved book = {}", dddSaved);
+        logger.info("Saved book = {}", noEJBSaved);
 
         System.out.println("In Bootstrap");
         System.out.println("Author count: " + authorRepository.count());
