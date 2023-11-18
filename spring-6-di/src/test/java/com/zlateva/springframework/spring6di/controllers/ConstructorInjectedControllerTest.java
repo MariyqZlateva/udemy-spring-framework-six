@@ -1,16 +1,13 @@
 package com.zlateva.springframework.spring6di.controllers;
 
-import com.zlateva.springframework.spring6di.servises.GreetingServiceImpl;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 
+@SpringBootTest
 class ConstructorInjectedControllerTest {
-
+    @Autowired
     ConstructorInjectedController controller;
-    @BeforeEach
-    void setUp() {
-        controller = new ConstructorInjectedController(new GreetingServiceImpl());
-    }
 
     @Test
     void sayHello() {
