@@ -4,8 +4,6 @@ import com.zlateva.springframework.spring6di.servises.GreetingServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 class ConstructorInjectedControllerTest {
 
     ConstructorInjectedController controller;
