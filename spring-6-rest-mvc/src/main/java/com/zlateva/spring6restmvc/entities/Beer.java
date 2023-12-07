@@ -2,6 +2,7 @@ package com.zlateva.spring6restmvc.entities;
 
 import com.zlateva.spring6restmvc.model.BeerStyle;
 import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.Version;
@@ -19,6 +20,7 @@ import java.util.UUID;
 @Builder
 @Getter
 @Setter
+@Entity
 @NoArgsConstructor
 @AllArgsConstructor
 public class Beer {
