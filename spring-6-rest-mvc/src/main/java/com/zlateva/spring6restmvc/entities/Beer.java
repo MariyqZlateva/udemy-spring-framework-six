@@ -1,6 +1,8 @@
 package com.zlateva.spring6restmvc.entities;
 
 import com.zlateva.spring6restmvc.model.BeerStyle;
+import jakarta.persistence.Column;
+import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.Version;
 import lombok.AllArgsConstructor;
@@ -8,6 +10,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.GenericGenerator;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -19,8 +22,13 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Beer {
+
     @Id
+    @GeneratedValue(generator = "UUID")
+    @GenericGenerator(name = "UUID",strategy = "org.hibernate.id.UUIDGenerator")
+    @Column(length = 36, columnDefinition = "varchar", updatable = false, nullable = false)
     private UUID id;
+
     @Version
     private Integer version;
     private String beerName;
