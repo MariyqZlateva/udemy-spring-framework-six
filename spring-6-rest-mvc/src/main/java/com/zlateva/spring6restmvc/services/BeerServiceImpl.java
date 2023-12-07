@@ -74,7 +74,7 @@ public class BeerServiceImpl implements BeerService {
 
         log.debug("Get Beer by Id - in service. Id: " + id.toString());
 
-        return Optional.of( beerMap.get(id));
+        return Optional.of(beerMap.get(id));
     }
 
     @Override

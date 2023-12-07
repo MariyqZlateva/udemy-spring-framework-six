@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -50,8 +51,8 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public Customer getCustomerById(UUID uuid) {
-        return customerMap.get(uuid);
+    public Optional<Customer> getCustomerById(UUID uuid) {
+        return Optional.of(customerMap.get(uuid));
 
     }
 
@@ -84,11 +85,11 @@ public class CustomerServiceImpl implements CustomerService {
     public void patchCustomerById(UUID customerId, Customer customer) {
         Customer existingCustomer = customerMap.get(customerId);
 
-        if (StringUtils.hasText(customer.getName())){
+        if (StringUtils.hasText(customer.getName())) {
             existingCustomer.setName(customer.getName());
         }
 
-        if (customer.getVersion() != null){
+        if (customer.getVersion() != null) {
             existingCustomer.setVersion(customer.getVersion());
         }
     }
