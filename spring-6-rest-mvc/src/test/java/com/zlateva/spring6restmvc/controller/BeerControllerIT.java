@@ -1,6 +1,7 @@
 package com.zlateva.spring6restmvc.controller;
 
 import com.zlateva.spring6restmvc.entities.Beer;
+import com.zlateva.spring6restmvc.mappers.BeerMapper;
 import com.zlateva.spring6restmvc.model.BeerDTO;
 import com.zlateva.spring6restmvc.repositories.BeerRepository;
 import jakarta.transaction.Transactional;
@@ -24,6 +25,25 @@ class BeerControllerIT {
     BeerController beerController;
     @Autowired
     BeerRepository beerRepository;
+    @Autowired
+    BeerMapper beerMapper;
+
+    @Test
+    void updateExistingBeer() {
+        Beer beer = beerRepository.findAll().get(0);
+        BeerDTO beerDTO = beerMapper.beerToBeerDto(beer);
+        beerDTO.setId(null);
+        beerDTO.setVersion(null);
+
+       final String beerName = "UPDATED";
+       beerDTO.setBeerName(beerName);
+
+       ResponseEntity responseEntity = beerController.updateByID(beer.getId(), beerDTO);
+       assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatusCode.valueOf(204));
+
+       Beer updatedBeer = beerRepository.findById(beer.getId()).get();
+       assertThat(updatedBeer.getBeerName()).isEqualTo(beerName);
+    }
 
     @Rollback
     @Transactional
