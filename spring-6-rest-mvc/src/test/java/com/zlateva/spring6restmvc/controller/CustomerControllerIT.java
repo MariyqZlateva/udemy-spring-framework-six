@@ -1,6 +1,7 @@
 package com.zlateva.spring6restmvc.controller;
 
 import com.zlateva.spring6restmvc.entities.Customer;
+import com.zlateva.spring6restmvc.mappers.CustomerMapper;
 import com.zlateva.spring6restmvc.model.CustomerDTO;
 import com.zlateva.spring6restmvc.repositories.CustomerRepository;
 import jakarta.transaction.Transactional;
@@ -23,6 +24,25 @@ class CustomerControllerIT {
     CustomerController customerController;
     @Autowired
     CustomerRepository customerRepository;
+    @Autowired
+    CustomerMapper customerMapper;
+
+    @Test
+    void updateExistingCustomer() {
+        Customer customer = customerRepository.findAll().get(0);
+        CustomerDTO customerDTO = customerMapper.customerToCustomerDto(customer);
+        customerDTO.setId(null);
+        customerDTO.setVersion(null);
+
+        final String customerName = "UPDATED";
+        customerDTO.setName(customerName);
+
+        ResponseEntity responseEntity = customerController.updateCustomerByID(customer.getId(), customerDTO);
+        assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatusCode.valueOf(204));
+
+        Customer updatedCustomer = customerRepository.findById(customer.getId()).get();
+        assertThat(updatedCustomer.getName()).isEqualTo(customerName);
+    }
 
     @Rollback
     @Transactional
