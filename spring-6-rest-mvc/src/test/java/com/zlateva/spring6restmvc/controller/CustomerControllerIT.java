@@ -34,6 +34,8 @@ class CustomerControllerIT {
         });
     }
 
+    @Rollback
+    @Transactional
     @Test
     void updateExistingCustomer() {
         Customer customer = customerRepository.findAll().get(0);
