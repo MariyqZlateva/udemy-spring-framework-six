@@ -49,9 +49,11 @@ public class BeerController {
     @PutMapping(BEER_PATH_ID)
     public ResponseEntity updateByID(@PathVariable("beerId") UUID beerId, @RequestBody BeerDTO beer) {
 
-        beerService.updateBeerById(beerId, beer);
+       if (beerService.updateBeerById(beerId, beer).isEmpty()){
+           throw new NotFoundException();
+       }
 
-        return new ResponseEntity(HttpStatus.NO_CONTENT);
+       return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
 
     @PostMapping(BEER_PATH)
@@ -62,6 +64,7 @@ public class BeerController {
 
         HttpHeaders headers = new HttpHeaders();
         headers.add("Location", "/api/v1/beer/"+savedBeer.getId().toString());
+
         return new ResponseEntity(headers, HttpStatus.CREATED);
     }
 
@@ -73,6 +76,7 @@ public class BeerController {
     @ExceptionHandler(NotFoundException.class)
     public ResponseEntity handleNotFoundException(){
         System.out.println("In exception handler");
+
         return ResponseEntity.notFound().build();
     }
 
