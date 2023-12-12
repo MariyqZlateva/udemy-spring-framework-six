@@ -50,7 +50,9 @@ public class CustomerController {
     @PutMapping(CUSTOMER_PATH_ID)
     public ResponseEntity updateCustomerByID(@PathVariable("customerId") UUID customerId,
                                              @RequestBody CustomerDTO customer) {
-        customerService.updateCustomerByID(customerId, customer);
+      if ( customerService.updateCustomerByID(customerId, customer).isEmpty()){
+          throw new NotFoundException();
+      }
         return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
 
@@ -61,6 +63,7 @@ public class CustomerController {
 
         HttpHeaders headers = new HttpHeaders();
         headers.add("Location", "/api/v1/customer/" + savedCustomer.getId().toString());
+
         return new ResponseEntity(headers, HttpStatus.CREATED);
     }
 
@@ -71,6 +74,7 @@ public class CustomerController {
 
     @GetMapping(value = CUSTOMER_PATH_ID)
     public CustomerDTO getCustomerById(@PathVariable("customerId") UUID id) {
+
         return customerService.getCustomerById(id).orElseThrow(NotFoundException::new);
     }
 }

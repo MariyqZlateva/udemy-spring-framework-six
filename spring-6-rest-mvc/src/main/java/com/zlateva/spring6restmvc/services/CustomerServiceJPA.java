@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
 @Service
@@ -34,11 +35,17 @@ public class CustomerServiceJPA implements CustomerService {
     }
 
     @Override
-    public void updateCustomerByID(UUID customerId, CustomerDTO customer) {
-        customerRepository.findById(customerId).ifPresent(foundCustomer -> {
+    public Optional<CustomerDTO> updateCustomerByID(UUID customerId, CustomerDTO customer) {
+        AtomicReference<Optional<CustomerDTO>> atomicReference = new AtomicReference<>();
+
+        customerRepository.findById(customerId).ifPresentOrElse(foundCustomer -> {
             foundCustomer.setName(customer.getName());
-            customerRepository.save(foundCustomer);
+            atomicReference.set(Optional.of(customerMapper
+                    .customerToCustomerDto(customerRepository.save(foundCustomer))));
+        }, () -> {
+            atomicReference.set(Optional.empty());
         });
+        return atomicReference.get();
     }
 
     @Override
