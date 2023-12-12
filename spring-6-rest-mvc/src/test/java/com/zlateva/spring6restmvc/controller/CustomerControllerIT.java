@@ -27,13 +27,32 @@ class CustomerControllerIT {
     @Autowired
     CustomerMapper customerMapper;
 
+    @Rollback
+    @Transactional
+    @Test
+    void patchCustomerById() {
+        Customer customer = customerRepository.findAll().get(0);
+        CustomerDTO customerDTO = customerMapper.customerToCustomerDto(customer);
+        customerDTO.setId(null);
+        customerDTO.setVersion(null);
+
+        final String customerName = "PATCHED";
+        customerDTO.setName(customerName);
+
+        ResponseEntity responseEntity = customerController.updateCustomerPatchById(customer.getId(), customerDTO);
+        assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatusCode.valueOf(204));
+
+        Customer updatedCustomer = customerRepository.findById(customer.getId()).get();
+        assertThat(updatedCustomer.getName()).isEqualTo(customerName);
+
+    }
+
     @Test
     void testDeleteByIdNotFound() {
         assertThrows(NotFoundException.class, () -> {
             customerController.deleteCustomerById(UUID.randomUUID());
         });
     }
-
 
     @Rollback
     @Transactional
