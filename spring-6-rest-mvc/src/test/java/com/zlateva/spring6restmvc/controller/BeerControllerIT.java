@@ -28,9 +28,21 @@ class BeerControllerIT {
     @Autowired
     BeerMapper beerMapper;
 
+    @Rollback
+    @Transactional
+    @Test
+    void deleteByIdFound() {
+        Beer beer = beerRepository.findAll().get(0);
+
+        ResponseEntity responseEntity = beerController.deleteById(beer.getId());
+        assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatusCode.valueOf(204));
+        assertThat(beerRepository.findById(beer.getId()).isEmpty());
+
+    }
+
     @Test
     void testUpdateNotFound() {
-        assertThrows(NotFoundException.class, ()->{
+        assertThrows(NotFoundException.class, () -> {
             beerController.updateByID(UUID.randomUUID(), BeerDTO.builder().build());
         });
     }
@@ -44,14 +56,14 @@ class BeerControllerIT {
         beerDTO.setId(null);
         beerDTO.setVersion(null);
 
-       final String beerName = "UPDATED";
-       beerDTO.setBeerName(beerName);
+        final String beerName = "UPDATED";
+        beerDTO.setBeerName(beerName);
 
-       ResponseEntity responseEntity = beerController.updateByID(beer.getId(), beerDTO);
-       assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatusCode.valueOf(204));
+        ResponseEntity responseEntity = beerController.updateByID(beer.getId(), beerDTO);
+        assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatusCode.valueOf(204));
 
-       Beer updatedBeer = beerRepository.findById(beer.getId()).get();
-       assertThat(updatedBeer.getBeerName()).isEqualTo(beerName);
+        Beer updatedBeer = beerRepository.findById(beer.getId()).get();
+        assertThat(updatedBeer.getBeerName()).isEqualTo(beerName);
     }
 
     @Rollback
