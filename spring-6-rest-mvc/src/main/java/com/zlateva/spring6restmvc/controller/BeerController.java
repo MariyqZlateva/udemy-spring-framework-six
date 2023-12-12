@@ -41,7 +41,9 @@ public class BeerController {
     @DeleteMapping(BEER_PATH_ID)
     public ResponseEntity deleteById(@PathVariable("beerId") UUID beerId) {
 
-        beerService.deleteById(beerId);
+        if (!beerService.deleteById(beerId)) {
+            throw new NotFoundException();
+        }
 
         return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
@@ -49,11 +51,11 @@ public class BeerController {
     @PutMapping(BEER_PATH_ID)
     public ResponseEntity updateByID(@PathVariable("beerId") UUID beerId, @RequestBody BeerDTO beer) {
 
-       if (beerService.updateBeerById(beerId, beer).isEmpty()){
-           throw new NotFoundException();
-       }
+        if (beerService.updateBeerById(beerId, beer).isEmpty()) {
+            throw new NotFoundException();
+        }
 
-       return new ResponseEntity(HttpStatus.NO_CONTENT);
+        return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
 
     @PostMapping(BEER_PATH)
@@ -63,7 +65,7 @@ public class BeerController {
         BeerDTO savedBeer = beerService.saveNewBeer(beer);
 
         HttpHeaders headers = new HttpHeaders();
-        headers.add("Location", "/api/v1/beer/"+savedBeer.getId().toString());
+        headers.add("Location", "/api/v1/beer/" + savedBeer.getId().toString());
 
         return new ResponseEntity(headers, HttpStatus.CREATED);
     }
@@ -74,7 +76,7 @@ public class BeerController {
     }
 
     @ExceptionHandler(NotFoundException.class)
-    public ResponseEntity handleNotFoundException(){
+    public ResponseEntity handleNotFoundException() {
         System.out.println("In exception handler");
 
         return ResponseEntity.notFound().build();
