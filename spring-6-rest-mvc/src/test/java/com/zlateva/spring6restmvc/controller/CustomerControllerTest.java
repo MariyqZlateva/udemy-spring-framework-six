@@ -125,6 +125,20 @@ class CustomerControllerTest {
     }
 
     @Test
+    void testCreateCustomerNullCustomerName() throws Exception {
+
+        CustomerDTO customerDTO = CustomerDTO.builder().build();
+
+        given(customerService.saveNewCustomer(any(CustomerDTO.class))).willReturn(customerServiceImpl.getAllCustomers().get(1));
+
+        mockMvc.perform(post(CustomerController.CUSTOMER_PATH)
+                .accept(MediaType.APPLICATION_JSON)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(customerDTO)))
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
     void testListCustomers() throws Exception {
         given(customerService.getAllCustomers()).willReturn(customerServiceImpl.getAllCustomers());
 
