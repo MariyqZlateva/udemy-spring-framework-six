@@ -1,6 +1,7 @@
 package com.zlateva.spring6restmvc.controller;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.TransactionSystemException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -12,8 +13,13 @@ import java.util.stream.Collectors;
 
 @ControllerAdvice
 public class CustomErrorController {
+    @ExceptionHandler
+    ResponseEntity handleJPAViolations(TransactionSystemException exception) {
+        return ResponseEntity.badRequest().build();
+    }
+
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    ResponseEntity handleBindErrors(MethodArgumentNotValidException exception){
+    ResponseEntity handleBindErrors(MethodArgumentNotValidException exception) {
 
         List errorLists = exception.getFieldErrors().stream()
                 .map(fieldError -> {
