@@ -1,6 +1,7 @@
 package com.zlateva.spring6restmvc.controller;
 
 import com.zlateva.spring6restmvc.model.BeerDTO;
+import com.zlateva.spring6restmvc.model.BeerStyle;
 import com.zlateva.spring6restmvc.services.BeerService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -51,7 +52,7 @@ public class BeerController {
     }
 
     @PutMapping(BEER_PATH_ID)
-    public ResponseEntity updateByID(@PathVariable("beerId") UUID beerId,@Validated @RequestBody BeerDTO beer) {
+    public ResponseEntity updateByID(@PathVariable("beerId") UUID beerId, @Validated @RequestBody BeerDTO beer) {
 
         if (beerService.updateBeerById(beerId, beer).isEmpty()) {
             throw new NotFoundException();
@@ -73,8 +74,9 @@ public class BeerController {
     }
 
     @GetMapping(value = BEER_PATH)
-    public List<BeerDTO> listBeers(@RequestParam(required = false) String beerName) {
-        return beerService.listBeers(beerName);
+    public List<BeerDTO> listBeers(@RequestParam(required = false) String beerName,
+                                   @RequestParam(required = false) BeerStyle beerStyle) {
+        return beerService.listBeers(beerName, beerStyle);
     }
 
     @ExceptionHandler(NotFoundException.class)

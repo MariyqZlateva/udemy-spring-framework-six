@@ -1,13 +1,14 @@
 package com.zlateva.spring6restmvc.services;
 
 import com.zlateva.spring6restmvc.model.BeerDTO;
+import com.zlateva.spring6restmvc.model.BeerStyle;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
 public interface BeerService {
-    List<BeerDTO> listBeers(String beerName);
+    List<BeerDTO> listBeers(String beerName, BeerStyle beerStyle);
    Optional <BeerDTO> getBeerById(UUID id);
 
     BeerDTO saveNewBeer(BeerDTO beer);
