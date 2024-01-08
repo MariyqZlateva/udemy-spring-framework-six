@@ -1,5 +1,6 @@
 package com.zlateva.spring6restmvc.services;
 
+import com.zlateva.spring6restmvc.entities.Beer;
 import com.zlateva.spring6restmvc.mappers.BeerMapper;
 import com.zlateva.spring6restmvc.model.BeerDTO;
 import com.zlateva.spring6restmvc.repositories.BeerRepository;
@@ -23,11 +24,21 @@ public class BeerServiceJPA implements BeerService {
     private final BeerMapper beerMapper;
 
     @Override
-    public List<BeerDTO> listBeers() {
-        return beerRepository.findAll()
-                .stream()
+    public List<BeerDTO> listBeers(String beerName) {
+
+        List<Beer> beerList;
+        if (StringUtils.hasText(beerName)) {
+            beerList = listBeerByName(beerName);
+        } else {
+            beerList = beerRepository.findAll();
+        }
+        return beerList.stream()
                 .map(beerMapper::beerToBeerDto)
                 .collect(Collectors.toList());
+    }
+
+    public List<Beer> listBeerByName(String beerName) {
+        return beerRepository.findAllByBeerNameIsLikeIgnoreCase("%" + beerName + "%");
     }
 
     @Override
@@ -76,16 +87,16 @@ public class BeerServiceJPA implements BeerService {
             if (StringUtils.hasText(beer.getBeerName())) {
                 foundBeer.setBeerName(beer.getBeerName());
             }
-            if (beer.getBeerStyle()!=null){
+            if (beer.getBeerStyle() != null) {
                 foundBeer.setBeerStyle(beer.getBeerStyle());
             }
-            if(StringUtils.hasText(beer.getUpc())){
+            if (StringUtils.hasText(beer.getUpc())) {
                 foundBeer.setUpc(beer.getUpc());
             }
-            if (beer.getPrice()!=null){
+            if (beer.getPrice() != null) {
                 foundBeer.setPrice(beer.getPrice());
             }
-            if (beer.getQuantityOnHand()!=null){
+            if (beer.getQuantityOnHand() != null) {
                 foundBeer.setQuantityOnHand(beer.getQuantityOnHand());
             }
 
