@@ -2,6 +2,7 @@ package com.zlateva.spring6restmvc.repositories;
 
 import com.zlateva.spring6restmvc.entities.Beer;
 import com.zlateva.spring6restmvc.entities.BeerOrder;
+import com.zlateva.spring6restmvc.entities.BeerOrderShipment;
 import com.zlateva.spring6restmvc.entities.Customer;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -35,7 +36,10 @@ class BeerOrderRepositoryTest {
     void testBeerOrders() {
         BeerOrder beerOrder = BeerOrder.builder()
                 .customerRef("Test order")
-                .customer(testCustomer)
+                .customer(testCustomer).
+                beerOrderShipment(BeerOrderShipment.builder()
+                        .trackingNumber("12345r").
+                        build())
                 .build();
 
         BeerOrder savedBeerOrder = beerOrderRepository.save(beerOrder);
