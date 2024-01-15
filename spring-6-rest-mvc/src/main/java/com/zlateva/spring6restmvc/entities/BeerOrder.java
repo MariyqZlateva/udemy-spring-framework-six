@@ -41,7 +41,7 @@ public class BeerOrder {
         this.customerRef = customerRef;
         this.setCustomer(customer);
         this.beerOrderLines = beerOrderLines;
-        this.beerOrderShipment = beerOrderShipment;
+        this.setBeerOrderShipment(beerOrderShipment);
     }
 
     @Id
