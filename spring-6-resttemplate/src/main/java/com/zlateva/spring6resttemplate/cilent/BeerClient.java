@@ -4,6 +4,8 @@ import com.zlateva.spring6resttemplate.model.BeerDTO;
 import com.zlateva.spring6resttemplate.model.BeerStyle;
 import org.springframework.data.domain.Page;
 
+import java.util.UUID;
+
 public interface BeerClient {
 
     Page<BeerDTO> listBeers();
@@ -13,4 +15,6 @@ public interface BeerClient {
                             Boolean showInventory,
                             Integer pageNumber,
                             Integer pageSize);
+
+    BeerDTO getBeerById(UUID beerId);
 }
