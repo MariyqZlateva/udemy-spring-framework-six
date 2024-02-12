@@ -22,7 +22,7 @@ public interface BeerClient {
 
     BeerDTO updateBeer(BeerDTO beerDto);
 
-    void deleteBeer(UUID id);
+    void deleteBeer(UUID beerId);
 
 }
 
