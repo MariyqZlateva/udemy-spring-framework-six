@@ -11,7 +11,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -82,12 +81,12 @@ public class BeerController {
         return beerService.listBeers(beerName, beerStyle, showInventory, pageNumber, pageSize);
     }
 
-    @ExceptionHandler(NotFoundException.class)
-    public ResponseEntity handleNotFoundException() {
-        System.out.println("In exception handler");
-
-        return ResponseEntity.notFound().build();
-    }
+//    @ExceptionHandler(NotFoundException.class)
+//    public ResponseEntity handleNotFoundException() {
+//        System.out.println("In exception handler");
+//
+//        return ResponseEntity.notFound().build();
+//    }
 
     @GetMapping(value = BEER_PATH_ID)
     public BeerDTO getBeerById(@PathVariable("beerId") UUID beerId) {
