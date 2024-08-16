@@ -2,11 +2,15 @@ package com.zlateva.spring6reactiveexamples.repositories;
 
 import com.zlateva.spring6reactiveexamples.domain.Person;
 import org.junit.jupiter.api.Test;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+
+import java.util.List;
 
 class PersonRepositoryImplTest {
 
     PersonRepository personRepository = new PersonRepositoryImpl();
+
     @Test
     void testMonoByIdBlock() {
         Mono<Person> personMono = personRepository.getById(1);
@@ -33,8 +37,51 @@ class PersonRepositoryImplTest {
 
         personMono.map(person -> {
             return person.getFirstName();
-        }).subscribe(firstName ->{
+        }).subscribe(firstName -> {
             System.out.println(firstName);
+        });
+    }
+
+    @Test
+    void testFluxBlock() {
+        Flux<Person> personFlux = personRepository.finedAll();
+
+        Person person = personFlux.blockFirst();
+
+        System.out.println(person.toString());
+
+    }
+
+    @Test
+    void testFluxSubscriber() {
+        Flux<Person> personFlux = personRepository.finedAll();
+
+        personFlux.subscribe(person -> {
+            System.out.println(person.toString());
+        });
+    }
+
+    @Test
+    void testFluxMap() {
+        Flux<Person> personFlux = personRepository.finedAll();
+
+        personFlux.map(person -> {
+            return person.getFirstName();
+        }).subscribe(firstName -> {
+            System.out.println(firstName);
+        });
+    }
+
+    @Test
+    void testFluxToList() {
+        Flux<Person> personFlux = personRepository.finedAll();
+
+        Mono<List<Person>> listMono = personFlux.collectList();
+
+        listMono.subscribe(list->{
+            list.forEach(person -> {
+                System.out.println(person.getFirstName());
+            });
         });
     }
 }
