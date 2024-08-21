@@ -7,9 +7,26 @@ import reactor.core.publisher.Mono;
 
 import java.util.List;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+
 class PersonRepositoryImplTest {
 
     PersonRepository personRepository = new PersonRepositoryImpl();
+
+    @Test
+    void testGetByIdFound() {
+        Mono<Person> personMono = personRepository.getById(3);
+
+        assertEquals(Boolean.TRUE, personMono.hasElement().block());
+    }
+
+    @Test
+    void testGetByIdNotFound() {
+        Mono<Person> personMono = personRepository.getById(6);
+
+        assertFalse(Boolean.FALSE, String.valueOf(personMono.hasElement().block()));
+    }
 
     @Test
     void testMonoByIdBlock() {
@@ -78,7 +95,7 @@ class PersonRepositoryImplTest {
 
         Mono<List<Person>> listMono = personFlux.collectList();
 
-        listMono.subscribe(list->{
+        listMono.subscribe(list -> {
             list.forEach(person -> {
                 System.out.println(person.getFirstName());
             });
@@ -87,9 +104,9 @@ class PersonRepositoryImplTest {
 
     @Test
     void testFilterOnName() {
-    personRepository.finedAll()
-            .filter(person -> person.getFirstName().equals("Fiona"))
-            .subscribe(person -> System.out.println(person.getFirstName()));
+        personRepository.finedAll()
+                .filter(person -> person.getFirstName().equals("Fiona"))
+                .subscribe(person -> System.out.println(person.getFirstName()));
 
     }
 
@@ -107,7 +124,7 @@ class PersonRepositoryImplTest {
 
         Flux<Person> personFlux = personRepository.finedAll();
 
-        final  Integer id = 8;
+        final Integer id = 8;
 
         Mono<Person> personMono = personFlux.filter(person -> person.getId().equals(id)).single()
                 .doOnError(throwable -> {
