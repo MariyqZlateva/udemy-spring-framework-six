@@ -9,7 +9,7 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.LastModifiedDate;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Data
 @NoArgsConstructor
@@ -24,9 +24,9 @@ public class Beer {
     private Integer quantityOnHand;
     private BigDecimal price;
     @CreatedDate
-    private LocalDate createDate;
+    private LocalDateTime createdDate;
     @LastModifiedDate
-    private LocalDate lastModifiedDate;
+    private LocalDateTime lastModifiedDate;
 
 
 }
