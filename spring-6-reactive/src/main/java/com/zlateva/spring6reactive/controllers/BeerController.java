@@ -4,6 +4,7 @@ import com.zlateva.spring6reactive.model.BeerDTO;
 import com.zlateva.spring6reactive.services.BeerService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -22,6 +23,13 @@ public class BeerController {
 
 
     private final BeerService beerService;
+
+    @DeleteMapping(BEER_PATH_ID)
+    Mono<ResponseEntity<Void>> deleteBeerById(@PathVariable Integer beerId){
+        return beerService.deleteBeerById(beerId).map(response->
+                    ResponseEntity.noContent().build());
+    }
+
 
     @PutMapping(BEER_PATH_ID)
     ResponseEntity<Void> updateExistingBeer(@PathVariable("beerId") Integer beerId,
