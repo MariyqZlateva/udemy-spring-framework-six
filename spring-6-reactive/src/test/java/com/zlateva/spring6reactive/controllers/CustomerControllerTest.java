@@ -22,6 +22,15 @@ class CustomerControllerTest {
     WebTestClient webTestClient;
 
     @Test
+    void testPatchNotFound() {
+        webTestClient.patch()
+                .uri(CustomerController.CUSTOMER_PATH_ID, 999)
+                .body(Mono.just(CustomerRepositoryTest.getTestCustomer()), CustomerDTO.class)
+                .exchange()
+                .expectStatus().isNotFound();
+    }
+
+    @Test
     @Order(999)
     void testDeleteCustomer() {
         webTestClient.delete()
