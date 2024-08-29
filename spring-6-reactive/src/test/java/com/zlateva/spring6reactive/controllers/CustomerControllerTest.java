@@ -32,6 +32,18 @@ class CustomerControllerTest {
 
     @Test
     @Order(3)
+    void testUpdateBeerBadDta() {
+        Customer testCustomer = CustomerRepositoryTest.getTestCustomer();
+        testCustomer.setCustomerName("");
+
+        webTestClient.put()
+                .uri(CustomerController.CUSTOMER_PATH_ID, 1)
+                .body(Mono.just(testCustomer), CustomerDTO.class)
+                .exchange()
+                .expectStatus().isBadRequest();
+    }
+    @Test
+    @Order(3)
     void testUpdateBeer() {
         webTestClient.put()
                 .uri(CustomerController.CUSTOMER_PATH_ID, 1)
