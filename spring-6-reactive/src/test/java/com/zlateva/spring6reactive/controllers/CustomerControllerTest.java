@@ -1,5 +1,6 @@
 package com.zlateva.spring6reactive.controllers;
 
+import com.zlateva.spring6reactive.domain.Customer;
 import com.zlateva.spring6reactive.model.CustomerDTO;
 import com.zlateva.spring6reactive.repositories.CustomerRepositoryTest;
 import org.junit.jupiter.api.MethodOrderer;
@@ -38,6 +39,19 @@ class CustomerControllerTest {
                 .exchange()
                 .expectStatus().isNoContent();
     }
+
+    @Test
+    void testCreateCustomerBadData() {
+        Customer testCustomer = CustomerRepositoryTest.getTestCustomer();
+        testCustomer.setCustomerName("");
+
+        webTestClient.post().uri(CustomerController.CUSTOMER_PATH)
+                .body(Mono.just(testCustomer), CustomerDTO.class)
+                .header("Content-type", "application/json")
+                .exchange()
+                .expectStatus().isBadRequest();
+    }
+
 
     @Test
     void testCreateCustomer() {

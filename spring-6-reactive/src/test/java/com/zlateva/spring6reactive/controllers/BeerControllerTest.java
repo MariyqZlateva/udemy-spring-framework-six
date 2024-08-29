@@ -1,5 +1,6 @@
 package com.zlateva.spring6reactive.controllers;
 
+import com.zlateva.spring6reactive.domain.Beer;
 import com.zlateva.spring6reactive.model.BeerDTO;
 import com.zlateva.spring6reactive.repositories.BeerRepositoryTest;
 import org.junit.jupiter.api.MethodOrderer;
@@ -38,6 +39,19 @@ class BeerControllerTest {
                 .exchange()
                 .expectStatus().isNoContent();
     }
+
+    @Test
+    void testCreateBadData() {
+        Beer testBeer = BeerRepositoryTest.getTestBeer();
+        testBeer.setBeerName("");
+
+        webTestClient.post().uri(BeerController.BEER_PATH)
+                .body(Mono.just(testBeer), BeerDTO.class)
+                .header("Content-type", "application/json")
+                .exchange()
+                .expectStatus().isBadRequest();
+    }
+
 
     @Test
     void testCreateBeer() {
