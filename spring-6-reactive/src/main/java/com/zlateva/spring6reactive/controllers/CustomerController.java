@@ -46,7 +46,7 @@ public class CustomerController {
                                             @Validated @RequestBody CustomerDTO customerDTO) {
         customerService.updateCustomer(customerId, customerDTO).subscribe();
 
-        return ResponseEntity.ok().build();
+        return ResponseEntity.noContent().build();
     }
 
     @PostMapping(CUSTOMER_PATH)
