@@ -32,6 +32,15 @@ class CustomerControllerTest {
 
     @Test
     @Order(999)
+    void testDeleteCustomerNotFound() {
+        webTestClient.delete()
+                .uri(CustomerController.CUSTOMER_PATH_ID, 999)
+                .exchange()
+                .expectStatus().isNotFound();
+    }
+
+    @Test
+    @Order(999)
     void testDeleteCustomer() {
         webTestClient.delete()
                 .uri(CustomerController.CUSTOMER_PATH_ID, 1)

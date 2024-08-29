@@ -31,7 +31,9 @@ public class CustomerController {
 
     @DeleteMapping(CUSTOMER_PATH_ID)
     Mono<ResponseEntity<Void>> deleteCustomerById(@PathVariable Integer customerId) {
-        return customerService.deleteCustomerById(customerId)
+        return customerService.getCustomerById(customerId)
+                .switchIfEmpty(Mono.error(new ResponseStatusException(HttpStatus.NOT_FOUND)))
+                .map(customerDTO -> customerService.deleteCustomerById(customerDTO.getId()))
                 .thenReturn(ResponseEntity
                         .noContent().build());
     }
