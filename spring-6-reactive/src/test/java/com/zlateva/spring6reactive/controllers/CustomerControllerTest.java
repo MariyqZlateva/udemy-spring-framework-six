@@ -32,7 +32,7 @@ class CustomerControllerTest {
 
     @Test
     @Order(3)
-    void testUpdateBeerBadDta() {
+    void testUpdateCustomerBadDta() {
         Customer testCustomer = CustomerRepositoryTest.getTestCustomer();
         testCustomer.setCustomerName("");
 
@@ -42,9 +42,20 @@ class CustomerControllerTest {
                 .exchange()
                 .expectStatus().isBadRequest();
     }
+
     @Test
     @Order(3)
-    void testUpdateBeer() {
+    void testUpdateCustomerNotFound() {
+        webTestClient.put()
+                .uri(CustomerController.CUSTOMER_PATH_ID, 999)
+                .body(Mono.just(CustomerRepositoryTest.getTestCustomer()), CustomerDTO.class)
+                .exchange()
+                .expectStatus().isNotFound();
+    }
+
+    @Test
+    @Order(3)
+    void testUpdateCustomer() {
         webTestClient.put()
                 .uri(CustomerController.CUSTOMER_PATH_ID, 1)
                 .body(Mono.just(CustomerRepositoryTest.getTestCustomer()), CustomerDTO.class)

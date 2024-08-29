@@ -45,11 +45,11 @@ public class CustomerController {
 
 
     @PutMapping(CUSTOMER_PATH_ID)
-    ResponseEntity<Void> updateExistingCustomer(@PathVariable("customerId") Integer customerId,
+    Mono<ResponseEntity<Object>> updateExistingCustomer(@PathVariable("customerId") Integer customerId,
                                                 @Validated @RequestBody CustomerDTO customerDTO) {
-        customerService.updateCustomer(customerId, customerDTO).subscribe();
+        return customerService.updateCustomer(customerId, customerDTO).switchIfEmpty(Mono.error(new ResponseStatusException(HttpStatus.NOT_FOUND)))
+                .map(savedDTO -> ResponseEntity.noContent().build());
 
-        return ResponseEntity.noContent().build();
     }
 
     @PostMapping(CUSTOMER_PATH)
