@@ -37,7 +37,7 @@ class BeerServiceImplTest {
             System.out.println("Saved beer DTO: " + savedDto.toString());
         });
 
-        Thread.sleep(1000l);
+        Thread.sleep(1000L);
     }
 
     public static Beer getTestBeer() {
