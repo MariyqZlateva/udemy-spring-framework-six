@@ -40,6 +40,22 @@ class BeerServiceImplTest {
     }
 
     @Test
+    void finedFirstByBeerNameTest() {
+        BeerDTO beerDto = getSavedBeerDto();
+
+        AtomicBoolean atomicBoolean = new AtomicBoolean(false);
+
+        Mono<BeerDTO> foundDto = beerService.finedFirstByBeerName(beerDto.getBeerName());
+
+        foundDto.subscribe(dto -> {
+            System.out.println(dto.toString());
+            atomicBoolean.set(true);
+        });
+
+        await().untilTrue(atomicBoolean);
+    }
+
+    @Test
     @DisplayName("Test Save Beer Using Subscriber")
     void saveBeerUseSubscriber() {
 
@@ -119,11 +135,11 @@ class BeerServiceImplTest {
 
     }
 
-    public BeerDTO getSavedBeerDto(){
+    public BeerDTO getSavedBeerDto() {
         return beerService.saveBeer(Mono.just(getTestBeerDto())).block();
     }
 
-    public static BeerDTO getTestBeerDto(){
+    public static BeerDTO getTestBeerDto() {
         return new BeerMapperImpl().beerToBeerDto(getTestBeer());
     }
 

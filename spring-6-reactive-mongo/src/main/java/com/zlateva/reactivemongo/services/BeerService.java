@@ -7,6 +7,8 @@ import reactor.core.publisher.Mono;
 
 public interface BeerService {
 
+    Mono<BeerDTO> finedFirstByBeerName(String beerName);
+
     Flux<BeerDTO> listBeers();
 
     Mono<BeerDTO> saveBeer(Mono<BeerDTO> beerDto);
