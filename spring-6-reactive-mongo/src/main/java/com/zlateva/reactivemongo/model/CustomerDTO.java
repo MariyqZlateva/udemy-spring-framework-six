@@ -1,6 +1,7 @@
 package com.zlateva.reactivemongo.model;
 
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -18,6 +19,7 @@ public class CustomerDTO {
     private String id;
 
     @NotBlank
+    @Size(min = 3, max = 255)
     private String customerName;
     private LocalDateTime createdDate;
     private LocalDateTime lastModifiedDate;

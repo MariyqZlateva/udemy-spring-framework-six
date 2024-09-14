@@ -1,7 +1,7 @@
 package com.zlateva.reactivemongo.repositories;
 
 import com.zlateva.reactivemongo.domain.Customer;
-import org.springframework.data.mongodb.repository.ReactiveMongoRepository;
+import org.springframework.data.repository.reactive.ReactiveCrudRepository;
 
-public interface CustomerRepository extends ReactiveMongoRepository<Customer, String> {
+public interface CustomerRepository extends ReactiveCrudRepository<Customer, String> {
 }
