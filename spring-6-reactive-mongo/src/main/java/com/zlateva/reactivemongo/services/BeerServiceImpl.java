@@ -23,7 +23,7 @@ public class BeerServiceImpl implements BeerService {
     }
 
     @Override
-    public Flux<BeerDTO> findAllByBeerStyle(String beerStyle) {
+    public Flux<BeerDTO> findByBeerStyle(String beerStyle) {
         return beerRepository.findAllByBeerStyle(beerStyle)
                 .map(beerMapper::beerToBeerDto);
     }

@@ -10,7 +10,7 @@ public interface BeerService {
 
     Mono<BeerDTO> finedFirstByBeerName(String beerName);
 
-    Flux<BeerDTO> findAllByBeerStyle(String beerStyle);
+    Flux<BeerDTO> findByBeerStyle(String beerStyle);
 
     Flux<BeerDTO> listBeers();
 
